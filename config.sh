@@ -49,7 +49,7 @@ case `hostname` in
       OUT_PATH='out'
       MODEL_PATH='model'
     ;;
-  *) echo "This workstation is not known."
+*) echo "This workstation is not known."
       LOG_PATH='log'
       SET_PATH='set'
       DATA_PATH='data'

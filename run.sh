@@ -3,8 +3,8 @@
 chmod +x ./config.sh
 . ./config.sh
 
-MIN_SNR=-10
-MAX_SNR=20
+MIN_SNR=-5
+MAX_SNR=15
 SNR_INTER=1
 
 ## See if BERT postional encoding improves performance
@@ -100,7 +100,7 @@ then
     python3 main.py --ver               $VER                        \
                     --network           'ResNetV2'                  \
                     --d_model           256                         \
-                    --n_blocks          40                          \
+                    --n_blocks          20                          \
                     --d_f               64                          \
                     --k                 3                           \
                     --max_d_rate        16                          \
@@ -108,7 +108,7 @@ then
                     --unit_type         "ReLU->LN->W+b"             \
                     --loss_fnc          "BinaryCrossentropy"        \
                     --outp_act          "Sigmoid"                   \
-                    --max_epochs        200                         \
+                    --max_epochs        50                         \
                     --resume_epoch      0                           \
                     --test_epoch        200                         \
                     --mbatch_size       8                           \
