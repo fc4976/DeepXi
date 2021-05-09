@@ -1,3 +1,7 @@
+model/
+log/
+out/
+*.wav
 *.m~
 mmse_normal_gamma.py
 monitor_iter.m
