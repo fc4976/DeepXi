@@ -100,7 +100,7 @@ then
     python3 main.py --ver               $VER                        \
                     --network           'ResNetV2'                  \
                     --d_model           256                         \
-                    --n_blocks          40                          \
+                    --n_blocks          20                          \
                     --d_f               64                          \
                     --k                 3                           \
                     --max_d_rate        16                          \
@@ -108,13 +108,13 @@ then
                     --unit_type         "ReLU->LN->W+b"             \
                     --loss_fnc          "BinaryCrossentropy"        \
                     --outp_act          "Sigmoid"                   \
-                    --max_epochs        200                         \
+                    --max_epochs        10                         \
                     --resume_epoch      0                           \
-                    --test_epoch        200                         \
+                    --test_epoch        10                         \
                     --mbatch_size       8                           \
                     --inp_tgt_type      'MagXi'                     \
                     --map_type          'DBNormalCDF'               \
-                    --sample_size       1000                        \
+                    --sample_size       10                        \
                     --f_s               16000                       \
                     --T_d               32                          \
                     --T_s               16                          \
