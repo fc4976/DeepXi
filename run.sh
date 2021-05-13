@@ -110,7 +110,7 @@ then
                     --outp_act          "Sigmoid"                   \
                     --max_epochs        50                         \
                     --resume_epoch      0                           \
-                    --test_epoch        200                         \
+                    --test_epoch        50                         \
                     --mbatch_size       8                           \
                     --inp_tgt_type      'MagXi'                     \
                     --map_type          'DBNormalCDF'               \
