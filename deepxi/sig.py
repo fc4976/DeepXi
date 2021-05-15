@@ -12,6 +12,10 @@ import functools
 import numpy as np
 import scipy.special as spsp
 import tensorflow as tf
+import audiolib
+
+level_lower = -35
+level_upper = -15
 
 """
 [1] Huang, X., Acero, A., Hon, H., 2001. Spoken Language Processing:
@@ -248,11 +252,15 @@ class InputTarget(AnalysisSynthesis):
 			d - truncated, scaled, and padded noise waveform.
 		"""
 		s, d = s[:s_len], d[:d_len]
-		(x, d) = self.add_noise(s, d, s_len, d_len, snr)
-		total_zeros = tf.subtract(pad_len, s_len)
+		# (x, d) = self.add_noise(s, d, s_len, d_len, snr)
+		x, s, d = audiolib.mix_speech_noise(s.numpy(), d.numpy(), snr.numpy(), level_lower, level_upper)
+		total_zeros = tf.subtract(pad_len, len(s))
 		x = tf.pad(x, [[0, total_zeros]], "CONSTANT")
 		s = tf.pad(s, [[0, total_zeros]], "CONSTANT")
 		d = tf.pad(d, [[0, total_zeros]], "CONSTANT")
+		x = tf.cast(x, tf.float32)
+		s = tf.cast(s, tf.float32)
+		d = tf.cast(d, tf.float32)
 		return (x, s, d)
 
 	def add_noise(self, s, d, s_len, d_len, snr):
