@@ -108,13 +108,13 @@ then
                     --unit_type         "ReLU->LN->W+b"             \
                     --loss_fnc          "BinaryCrossentropy"        \
                     --outp_act          "Sigmoid"                   \
-                    --max_epochs        10                         \
+                    --max_epochs        1                         \
                     --resume_epoch      0                           \
-                    --test_epoch        10                         \
-                    --mbatch_size       8                           \
+                    --test_epoch        1                         \
+                    --mbatch_size       4                           \
                     --inp_tgt_type      'MagXi'                     \
                     --map_type          'DBNormalCDF'               \
-                    --sample_size       10                        \
+                    --sample_size       8                        \
                     --f_s               16000                       \
                     --T_d               32                          \
                     --T_s               16                          \
