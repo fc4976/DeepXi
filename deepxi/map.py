@@ -400,6 +400,8 @@ class NormalCDF(Map):
 		if 'DB' in self.map_type: x = self.db(x)
 		self.mu = tf.math.reduce_mean(x, axis=0)
 		self.sigma = tf.math.reduce_std(x, axis=0)
+		save_mat('./data/mu.mat', self.mu.numpy(), 'mu')
+		save_mat('./data/sigma.mat', self.sigma.numpy(), 'sigma')
 
 class LaplaceCDF(Map):
 	"""

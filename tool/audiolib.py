@@ -322,3 +322,15 @@ def mix_speech_noise(data_speech, data_noise, snr, level_lower, level_upper):
     data_speech_new, data_noise_new, data_noisy, noisy_rms_level = snr_mixer(
         data_speech, data_noise, snr, target_level_lower=level_lower, target_level_upper=level_upper)
     return (data_noisy, data_speech_new, data_noise_new)
+
+import scipy.signal as ss
+import scipy.linalg as sl
+def apply_speech_rir(data_speech, rir_wavs):
+    num = len(rir_wavs)
+    index = random.randint(0, num-1)
+    rand_rir = rir_wavs[index]
+    revb = ss.convolve(data_speech, rand_rir)
+    revb = np.asarray(revb)
+    nm = sl.norm(rand_rir)
+    revb = revb / nm
+    return revb
