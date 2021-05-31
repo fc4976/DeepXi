@@ -1,5 +1,7 @@
 #!/bin/bash
 
+export PYTHONPATH=$PYTHONPATH:./tool
+
 chmod +x ./config.sh
 . ./config.sh
 

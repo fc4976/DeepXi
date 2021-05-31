@@ -67,11 +67,11 @@ for speech_wav in speech_wavs:
             out_noise, basenames[-2] + '_' + str(snr) + 'dB' + basenames[-1])
         speech_wav = os.path.join(
             out_speech, basenames[-2] + '_' + str(snr) + 'dB' + basenames[-1])
-        if len(data_noise) <= len(data_speech):
+        if len(data_noise) < len(data_speech):
             used_len = len(data_noise)
             while len(data_speech) > used_len:
                 more_len = min(len(data_noise), len(data_speech) - used_len)
-                data_noise = np.append(data_noise, data_noise[1:more_len])
+                data_noise = np.append(data_noise, data_noise[:more_len])
                 used_len = used_len + more_len
         else:
             index = random.randint(0, len(data_noise) - len(data_speech))
