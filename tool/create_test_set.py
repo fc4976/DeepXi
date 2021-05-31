@@ -55,8 +55,8 @@ for noise_wav in glob.iglob(os.path.join(noise_dir, '**/*.wav'), recursive=True)
 
 level_lower = -35
 level_upper = -15
-snr_min = -5
-snr_max = 15
+snr_min = -2
+snr_max = 25
 
 n = 0
 random.shuffle(speech_wavs)

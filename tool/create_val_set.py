@@ -49,8 +49,8 @@ noise_wavs = []
 for noise_wav in glob.iglob(os.path.join(noise_dir, '**/*.wav'), recursive=True):
     noise_wavs.append(noise_wav)
 
-snr_min = -5
-snr_max = 15
+snr_min = -2
+snr_max = 25
 
 n = 0
 random.shuffle(speech_wavs)

@@ -3,8 +3,8 @@
 chmod +x ./config.sh
 . ./config.sh
 
-MIN_SNR=-5
-MAX_SNR=15
+MIN_SNR=-2
+MAX_SNR=25
 SNR_INTER=1
 
 ## See if BERT postional encoding improves performance
