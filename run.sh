@@ -97,7 +97,7 @@ fi
 # This prevents overfitting to the training set.
 if [ "$VER" == 'resnet-1.1c' ]
 then
-    python3 main.py --ver               $VER                        \
+    CUDA_VISIBLE_DEVICES=1 python3 main.py --ver               $VER                        \
                     --network           'ResNetV2'                  \
                     --d_model           256                         \
                     --n_blocks          40                          \
@@ -108,9 +108,9 @@ then
                     --unit_type         "ReLU->LN->W+b"             \
                     --loss_fnc          "BinaryCrossentropy"        \
                     --outp_act          "Sigmoid"                   \
-                    --max_epochs        200                         \
+                    --max_epochs        100                         \
                     --resume_epoch      0                           \
-                    --test_epoch        200                         \
+                    --test_epoch        100                         \
                     --mbatch_size       8                           \
                     --inp_tgt_type      'MagXi'                     \
                     --map_type          'DBNormalCDF'               \
