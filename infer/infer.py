@@ -60,15 +60,19 @@ def save_mat(path, data, name):
     if not path.endswith('.mat'): path = path + '.mat'
     savemat(path, {name: data})
 
-
-if len(sys.argv) != 5:
-    print('Usage: infer.py source_folder dest_folder pp_folder config_folder')
+if len(sys.argv) != 4 and len(sys.argv) != 5:
+    print('Usage: infer.py config_folder source_folder dest_folder (pp_folder)')
     sys.exit(1)
 
-src_dir = sys.argv[1]
-dest_dir = sys.argv[2]
-pp_dir = sys.argv[3]
-conf_dir = sys.argv[4]
+conf_dir = sys.argv[1]
+src_dir = sys.argv[2]
+dest_dir = sys.argv[3]
+
+if len(sys.argv) == 5:
+    pp_dir = sys.argv[4]
+    post_processing = 1
+else:
+    post_processing = 0
 
 if not os.path.exists(conf_dir):
     print(conf_dir + ' not exist!')
@@ -78,7 +82,7 @@ if not os.path.exists(src_dir):
     print(src_dir + ' not exist!')
     sys.exit(1)
 
-if not os.path.exists(pp_dir):
+if post_processing == 1 and not os.path.exists(pp_dir):
     try:
         os.makedirs(pp_dir)
     except OSError:
@@ -119,17 +123,18 @@ else:
 
 model.summary()
 
-gain_min = 0.1
-small_value = 1e-12
-beta = pow(0.5, frame_len / 10)
-frame_factor = pow(0.9, frame_len / 10)
-ep_min = 0.1
-ep_max = 2
-log_tmp = np.log(ep_max / ep_min)
-w_local = 1
-w_global = int(np.ceil(250 / (1000 / frame_len / 2)))
-hann_local = np.hanning(2 * w_local + 1)
-hann_global = np.hanning(2 * w_global + 1)
+if post_processing == 1:
+    gain_min = 0.01
+    small_value = 1e-12
+    beta = pow(0.5, frame_len / 10)
+    frame_factor = pow(0.9, frame_len / 10)
+    ep_min = 0.1
+    ep_max = 2
+    log_tmp = np.log(ep_max / ep_min)
+    w_local = 1
+    w_global = int(np.ceil(250 / (1000 / frame_len / 2)))
+    hann_local = np.hanning(2 * w_local + 1)
+    hann_global = np.hanning(2 * w_global + 1)
 
 for wavfile in glob.iglob(os.path.join(src_dir, '**/*.wav'), recursive=True):
     basename = os.path.basename(wavfile)
@@ -157,6 +162,9 @@ for wavfile in glob.iglob(os.path.join(src_dir, '**/*.wav'), recursive=True):
     y_STMS = tf.math.multiply(x_STMS, gain)
     out_wav = synthesis(y_STMS, x_STPS)
     soundfile.write(os.path.join(dest_dir, basename), out_wav, fs)
+
+    if post_processing == 0:
+        continue
 
     # Post Processing
     avg_epsylon = hat_xi.numpy()
@@ -218,7 +226,7 @@ for wavfile in glob.iglob(os.path.join(src_dir, '**/*.wav'), recursive=True):
     p = 1 / (1 + q / np.maximum(1 - q, small_value) *
              (1 + avg_epsylon) * np.exp(-1 * v))
     gain = np.transpose(gain.numpy())
-    pp_gain = (gain**p) * (gain_min**(1 - p))
+    pp_gain = np.maximum((gain**p) * (gain_min**(1 - p)), gain)
     pp_gain = np.transpose(pp_gain)
     pp_gain = tf.cast(pp_gain, tf.float64)
     y_STMS = tf.math.multiply(x_STMS, pp_gain)
